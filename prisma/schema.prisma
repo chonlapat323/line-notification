@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  lineGroups         UserLineGroup[]
+  verificationCodes  LineVerificationCode[]
+  sendLogsAsSender   LineSendLog[]          @relation("SendLogSender")
+  sendLogsAsTarget   LineSendLog[]          @relation("SendLogTarget")
+}
+
+model UserLineGroup {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lineGroupId String
+  groupName   String?
+  isActive    Boolean   @default(true)
+  verifiedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, lineGroupId])
+}
+
+model LineVerificationCode {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code      String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model LineSendLog {
+  id           String   @id @default(cuid())
+  senderId     String
+  sender       User     @relation("SendLogSender", fields: [senderId], references: [id])
+  targetUserId String
+  targetUser   User     @relation("SendLogTarget", fields: [targetUserId], references: [id])
+  lineGroupId  String
+  imageUrl     String
+  details      Json
+  status       String
+  errorMessage String?
+  sentAt       DateTime @default(now())
+}
