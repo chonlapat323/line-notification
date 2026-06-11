@@ -32,6 +32,8 @@ export async function POST(req: NextRequest) {
 
   const appUrl = process.env.APP_URL || "http://localhost:3000";
   const imageUrl = `${appUrl}/uploads/line/${filename}`;
+  console.log("[SEND] APP_URL:", appUrl);
+  console.log("[SEND] imageUrl:", imageUrl);
 
   const sender = await prisma.user.findUnique({ where: { id: payload.id } });
   if (!sender) return NextResponse.json({ error: "ไม่พบผู้ใช้" }, { status: 404 });
