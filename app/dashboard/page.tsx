@@ -57,6 +57,28 @@ export default function DashboardPage() {
             <p className="text-sm text-gray-400">ผูก LINE Group ของคุณกับระบบ</p>
           </div>
         </button>
+
+        <button
+          onClick={() => router.push("/dashboard/users")}
+          className="w-full bg-white border-2 border-gray-100 hover:border-green-300 text-gray-700 rounded-2xl p-5 flex items-center gap-4 shadow-sm transition"
+        >
+          <span className="text-4xl">👥</span>
+          <div className="text-left">
+            <p className="font-bold text-lg">จัดการ User</p>
+            <p className="text-sm text-gray-400">เพิ่ม / ดู User ในระบบ</p>
+          </div>
+        </button>
+
+        <button
+          onClick={() => router.push("/dashboard/history")}
+          className="w-full bg-white border-2 border-gray-100 hover:border-green-300 text-gray-700 rounded-2xl p-5 flex items-center gap-4 shadow-sm transition"
+        >
+          <span className="text-4xl">📋</span>
+          <div className="text-left">
+            <p className="font-bold text-lg">ประวัติการส่ง</p>
+            <p className="text-sm text-gray-400">ดู log การส่งรูปทั้งหมด</p>
+          </div>
+        </button>
       </div>
     </div>
   );
